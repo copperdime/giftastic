@@ -1,0 +1,28 @@
+html{
+	background-color: green;
+}
+h1{
+	
+	font-family: Helvetica;
+	color: darkblue;
+}
+
+.topic {
+	font-size: 15px;
+	font-family: Helvetica;
+	font-weight: bold;
+	background: orange;
+	border-color: red;
+	border-radius: 5px;
+	margin: 2px;
+	margin-bottom: 10px;
+	padding: 5px;
+}
+
+#add-topic{
+	border-color: green;
+}
+
+#topic-form{
+	margin: 20px;
+}

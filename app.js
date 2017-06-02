@@ -14,57 +14,27 @@
 9. All of these items need to be wrapped inside a for loop that will capture only the desired urls
 and the ratings  
 *
-*/ 
- // add topics array before the function call because it is a global variable
- 	$(function(){
-	var topics = ["Star Trek", "space", "jumbo jet", "purse", "kites"];
+*/
+// add topics array before the function call because it is a global variable
+$(function() {
+    var topics = ["Star Trek", "space", "tigers", "purses", "kites"];
 
-		$("#add-topic").on("click", function(event) {
+
+    $("#add-topic").on("click", function(event) {
         // event.preventDefault() can be used to prevent an event's default behavior.
         // Here, it prevents the submit button from trying to submit a form when clicked
-        // event.preventDefault();
+        event.preventDefault();
         // Here we grab the text from the input box
-        var newTopic = $("#topic-input").toString().val();
-        topics.push(newTopic);
+
+        var newTopic = $("#topic-input").val();
+        if (newTopic) {
+            topics.push(newTopic);
+            renderButtons();
+            // displayTopicInfo();
+        }
     });
 
-      function displayTopicInfo() {
-      	
-        var topic = $(this).attr("data-name");
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q="+topics+"&limit=10&api_key=dc6zaTOxFJmzC";
-
-        // Creates AJAX call for the specific topiv button being clicked
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        }).done(function(response) {
-        	console.log(response);
-
-          // Creates a div to hold the topic
-        $("#topics-view").empty();
-
-          for (var i = 0; i < response.data.length; i++){
-          	// var pic = response.data[i].images.fixed_height.url;
-          		var pic = $('<img/>', {src:response.data[i].images.fixed_height.url
-            			}).append("#topics-view"+i);
-
-          	console.log(pic);
-          	$("#topics-view").append(pic);
-          	// appendTo("#topics-view");
-          }
-
-          
-
-        // $("#topics-view").text(pic);
-
-        // $("#topics-view").append(pic);
-        // appendTo("#topics-view");
-
-		}); 
-
-    }
-
-		function renderButtons() {
+    function renderButtons() {
 
         // Deletes the topics prior to adding new topics
         // (this is necessary otherwise you will have repeat buttons)
@@ -72,24 +42,50 @@ and the ratings
         // Loops through the array of topics
         for (var i = 0; i < topics.length; i++) {
 
-          // Then dynamicaly generates buttons for each topic in the array
-          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-          var a = $("<button>");
-          // Adds a class of topic to our button
-          a.addClass("topic");
-          // Added a data-attribute
-          a.attr("data-name", topics[i]);
-          // Provided the initial button text
-          a.text(topics[i]);
-          // Added the button to the buttons-view div
-          $("#buttons-view").append(a);
+            // Then dynamicaly generates buttons for each topic in the array
+            // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+            var a = $("<button>");
+            // Adds a class of topic to our button
+            a.addClass("topic");
+            // Added a data-attribute
+            a.attr("data-name", topics[i]);
+            // Provided the initial button text
+            a.text(topics[i]);
+            // Added the button to the buttons-view div
+            $("#buttons-view").append(a);
         }
-      }
-      
-    renderButtons();
-      
-	displayTopicInfo();
-     
-  });
-  
+    }
 
+    $(document).on("click", ".topic", function(event) {
+        var topic = $(this).attr("data-name");
+
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&limit=10&api_key=dc6zaTOxFJmzC";
+
+        // Creates AJAX call for the specific topic button being clicked
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).done(function(response) {
+            console.log(response);
+            // renderButtons();
+
+            // Creates a div to hold the topic
+            $("#topics-view").empty();
+
+            for (var i = 0; i < response.data.length; i++) {
+                var pic = $('<img/>', {
+                    src: response.data[i].images.fixed_height.url
+                }).append("#topics-view" + i);
+
+                console.log(pic);
+                $("#topics-view").append(pic);
+            }
+
+        });
+    })
+
+    renderButtons();
+
+
+    
+});
