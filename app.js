@@ -73,8 +73,9 @@ $(function() {
             $("#topics-view").empty();
 
             for (var i = 0; i < response.data.length; i++) {
+                
                 var pic = $('<img/>', {
-                    src: response.data[i].images.fixed_height.url
+                    src: response.data[i].images.fixed_height.url,
                 }).append("#topics-view" + i);
 
                 console.log(pic);
